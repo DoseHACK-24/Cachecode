@@ -186,11 +186,11 @@ class WarehouseGUI:
                 cell = self.env.grid[i, j]
 
                 # Draw the cells based on their content
-                if cell.startswith('A'):  # Autobots
+                if cell.startswith('A'):  # Autobots 
                     self.canvas.create_rectangle(x1, y1, x2, y2, fill="blue")
                     self.canvas.create_text((x1+x2)/2, (y1+y2)/2, text=cell, fill="white")
                 elif cell.startswith('B'):  # Destinations
-                    self.canvas.create_rectangle(x1, y1, x2, y2, fill="green")
+                    self.canvas.create_rectangle(x1, y1, x2, y2, fill="yellow")
                     self.canvas.create_text((x1+x2)/2, (y1+y2)/2, text=cell, fill="white")
                 elif cell == 'X':  # Obstacles
                     self.canvas.create_rectangle(x1, y1, x2, y2, fill="red")
@@ -206,7 +206,7 @@ class WarehouseGUI:
     def start_training(self):
         """Start the training process."""
         self.training = True
-        num_episodes = 1000# Number of episodes to train
+        num_episodes = 10000 # Number of episodes to train
         best_episode = None
         min_time = float('inf')
         best_time = None
@@ -267,16 +267,17 @@ class WarehouseGUI:
 if __name__ == "__main__":
     # Define a simple grid (modify as needed)
     grid = np.array([
-        ['A1', ' ', ' ', ' ', 'B1'],
-        ['X', 'X', 'X', ' ', 'X'],
-        ['A2', ' ', 'X', ' ', 'B2'],
-        [' ', ' ', ' ', ' ', ' '],
-        ['X', 'X', 'X', ' ', 'X'],
-        ['A3', ' ', ' ', ' ', 'B3']
-    ])
+        ['A1',' ','X',' ','X','B1'],
+        [' ','X',' ',' ','X',''],
+        [' ',' ',' ',' ',' ',' '],
+        [' ','X',' ','X',' ','B2'],
+        ['A2',' ',' ',' ','X',' '],
+        ['A3',' ','X',' ','X','B3'],
 
+    ])
     env = WarehouseEnv(grid)
-    agent = QLearningAgent(state_space_size=env.rows * env.cols * 4 ** len(env.start_positions), action_space_size=ACTION_WAIT + 1)
+    agent = QLearningAgent(state_space_size=env.rows * env.cols * 4 ** len(env.start_positions)
+    , action_space_size=ACTION_WAIT + 1)
 
     root = tk.Tk()
     app = WarehouseGUI(root, env, agent)
